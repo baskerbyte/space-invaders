@@ -1,0 +1,7 @@
+[package]
+name = "space-invaders"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+ruscii = "0.4.0"
