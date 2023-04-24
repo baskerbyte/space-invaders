@@ -1,7 +1,7 @@
-use std::mem::take;
 use std::time::Duration;
 use ruscii::drawing::Pencil;
 use ruscii::spatial::{Direction, Vec2};
+use crate::alien::Alien;
 use crate::drawable::Drawable;
 use crate::offset::Offset;
 use crate::shoot::Shoot;
@@ -40,8 +40,17 @@ impl Player {
         }
     }
 
-    pub fn draw_shoots(&mut self, pencil: &mut Pencil) {
-        for (i, shoot) in self.shoots.iter_mut().enumerate() {
+    pub fn draw_shoots(&mut self, pencil: &mut Pencil, aliens: &mut Vec<Alien>) {
+        for i in 0..self.shoots.len() {
+            let shoot = &mut self.shoots[i];
+
+            if let Some(j) = aliens.iter().position(|alien| {
+                shoot.get_position() == alien.get_position()
+            }) {
+                aliens.remove(j);
+                shoot.character = String::from("*");
+            }
+
             shoot.draw(pencil);
 
             if shoot.get_character() == "*" {

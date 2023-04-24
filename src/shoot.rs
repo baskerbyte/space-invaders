@@ -8,6 +8,7 @@ pub struct Shoot {
     pub timer: Timer,
     pub direction: Direction,
     position: Vec2,
+    pub character: String
 }
 
 impl Shoot {
@@ -16,6 +17,7 @@ impl Shoot {
             timer: Timer::new(Duration::from_millis(45)),
             direction,
             position: Vec2::xy(position.x, position.y + direction.offset()),
+            character: "|".to_string(),
         }
     }
 
@@ -26,7 +28,7 @@ impl Shoot {
 
 impl Drawable for Shoot {
     fn get_character(&self) -> &str {
-        if self.position.y <= 2 || self.position.y >= 18 {
+        if self.position.y <= 2 || self.position.y >= 18 || self.character == "*" {
             "*"
         } else {
             "|"

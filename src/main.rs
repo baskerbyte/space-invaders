@@ -1,10 +1,11 @@
-use std::cmp::min;
+use std::ops::Range;
 use ruscii::app::{App, State};
-use ruscii::terminal::Window;
 use ruscii::drawing::{Pencil, RectCharset};
-use ruscii::keyboard::{KeyEvent, Key};
 use ruscii::spatial::{Vec2};
 use ruscii::gui::{FPSCounter};
+use ruscii::keyboard::{Key, KeyEvent};
+use ruscii::terminal::Window;
+use space_invaders::army::Army;
 use space_invaders::drawable::Drawable;
 use space_invaders::player::Player;
 
@@ -15,6 +16,7 @@ fn main() {
     let win_size = Vec2::xy(40, 20);
 
     let mut player = Player::new(get_player_position(win_size));
+    let mut army = Army::new(get_aliens_range(win_size));
 
     app.run(|app_state: &mut State, window: &mut Window| {
         for key_event in app_state.keyboard().last_key_events() {
@@ -41,11 +43,16 @@ fn main() {
         pencil.draw_rect(&RectCharset::simple_round_lines(), Vec2::zero(), win_size);
 
         player.draw(&mut pencil);
-        player.draw_shoots(&mut pencil);
+        player.draw_shoots(&mut pencil, &mut army.aliens);
+        army.draw_aliens(&mut pencil);
     });
 }
 
 fn get_player_position(win_size: Vec2) -> Vec2 {
     // Center the player
     Vec2::xy(win_size.x / 2, win_size.y - 2)
+}
+
+fn get_aliens_range(win_size: Vec2) -> Range<Vec2> {
+    Vec2::xy(5, 2)..Vec2::xy(35, 10)
 }
