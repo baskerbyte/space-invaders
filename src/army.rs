@@ -39,12 +39,13 @@ impl Army {
 
         if border_reached {
             self.direction *= -1;
-            for alien in self.aliens.iter_mut() {
-                alien.move_down();
-            }
         }
 
         for alien in self.aliens.iter_mut() {
+            if border_reached {
+                alien.move_down();
+            }
+
             alien.position.x += self.direction;
         }
     }
