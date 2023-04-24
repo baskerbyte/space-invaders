@@ -45,6 +45,10 @@ fn main() {
         player.draw(&mut pencil);
         player.draw_shoots(&mut pencil, &mut army.aliens);
         army.draw_aliens(&mut pencil);
+
+        if army.dead() {
+            app_state.stop();
+        }
     });
 }
 

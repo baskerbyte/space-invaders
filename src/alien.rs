@@ -3,7 +3,7 @@ use crate::drawable::Drawable;
 use crate::offset::Offset;
 
 pub struct Alien {
-    position: Vec2,
+    pub position: Vec2,
 }
 
 impl Alien {
@@ -29,7 +29,7 @@ impl Alien {
         self.position.y += 1
     }
 
-    fn hmove(&mut self, direction: Direction) {
+    pub fn hmove(&mut self, direction: Direction) {
         self.position.x += direction.offset();
     }
 }

@@ -9,13 +9,15 @@ use crate::timer::Timer;
 pub struct Army {
     pub aliens: Vec<Alien>,
     timer: Timer,
+    direction: i32
 }
 
 impl Army {
     pub fn new(range: Range<Vec2>) -> Self {
         Self {
             aliens: populate(range),
-            timer: Timer::new(Duration::from_millis(500))
+            timer: Timer::new(Duration::from_millis(250)),
+            direction: 1,
         }
     }
 
@@ -30,22 +32,25 @@ impl Army {
         }
     }
 
-    pub fn get_alien_at_position(&self, position: Vec2) -> Option<(usize, &Alien)> {
-        self.aliens.iter().enumerate().find(|(_i, alien)| {
-            alien.get_position() == position
-        })
-    }
+    fn move_aliens(&mut self) {
+        let border_reached = self.aliens.iter().any(|alien| {
+            alien.get_position().x == 1 || alien.get_position().x == 38
+        });
 
-    pub fn remove_alien_at(&mut self, position: Vec2) -> bool {
-        if let Some((i, _)) = self.get_alien_at_position(position) {
-            self.aliens.remove(i);
-            return true;
+        if border_reached {
+            self.direction *= -1;
+            for alien in self.aliens.iter_mut() {
+                alien.move_down();
+            }
         }
 
-        false
+        for alien in self.aliens.iter_mut() {
+            alien.position.x += self.direction;
+        }
     }
 
-    fn move_aliens(&mut self) {
+    pub fn dead(&self) -> bool {
+        self.aliens.len() == 0 || self.aliens.iter().any(|alien| alien.get_position().y > 17)
     }
 }
 
