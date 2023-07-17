@@ -34,7 +34,7 @@ Windows and macOS have no special dependencies.
 <p>First, clone the repository:</p>
 
 ```sh
-git clone https://github.com/oluiss/space-invaders.git
+git clone https://github.com/baskerbyte/space-invaders.git
 ```
 <p>Then, navigate to the project directory and run the following command:</p>
 
